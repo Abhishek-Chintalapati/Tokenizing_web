@@ -159,124 +159,124 @@ def dict_file(temp_dict):
 
 
 
-# def bm25(word, k=1.2, b=0.75):
-#     # term frequency...
-#     avgdl = sum((WORDS_COUNT[i]) for i in WORDS_COUNT) / 503
-#     N = 503
-#     temp = {}
-#     with open(os.path.join(dest_dir, "bm25.json" ), 'w') as file_name:
-#         for i, d in enumerate(WORDS_COUNT):
-#             if i+1 in LINKED_LIST[word]:
-#                 freq = LINKED_LIST[word][i+1]  # or f(q,D) - freq of query in Doc
-#                 tf = (freq * (k + 1)) / (freq + k * (1 - b + b * WORDS_COUNT[i+1] / avgdl))
-#                 # inverse document frequency...
-#                 N_q = len(LINKED_LIST[word])  # number of docs that contain the word
-#                 idf = ((N - N_q + 0.5) / (N_q + 0.5)) + 1
-#                 temp[i+1] = round(tf*idf, 4)
-#             else :
-#                 continue
-#         json.dump(temp,file_name, indent=4) 
+ def bm25(word, k=1.2, b=0.75):
+     # term frequency...
+     avgdl = sum((WORDS_COUNT[i]) for i in WORDS_COUNT) / 503
+     N = 503
+     temp = {}
+     with open(os.path.join(dest_dir, "bm25.json" ), 'w') as file_name:
+         for i, d in enumerate(WORDS_COUNT):
+             if i+1 in LINKED_LIST[word]:
+                 freq = LINKED_LIST[word][i+1]  # or f(q,D) - freq of query in Doc
+                 tf = (freq * (k + 1)) / (freq + k * (1 - b + b * WORDS_COUNT[i+1] / avgdl))
+                 # inverse document frequency...
+                 N_q = len(LINKED_LIST[word])  # number of docs that contain the word
+                 idf = ((N - N_q + 0.5) / (N_q + 0.5)) + 1
+                 temp[i+1] = round(tf*idf, 4)
+             else :
+                 continue
+         json.dump(temp,file_name, indent=4) 
 
-# def final_n_gram_table(dest_dir, filename, file_number):
-#     with open(os.path.join(dest_dir, filename.replace("html", "ngram")),'w') as new_file:
-#         temp =  {}
-#         for token in N_GRAM_LIST.keys() :
-#             #values_sum = sum(d.get(file_number, 0) for d in LINKED_LIST.values() if d)
-#             if file_number in N_GRAM_LIST[token]:
-#                 tf = N_GRAM_LIST[token][file_number] / N_GRAM_COUNT[file_number]
-#                 token_count = len(N_GRAM_LIST[token])
-#                 idf = 1/ token_count
-#                 ans = tf * idf 
-#                 temp [token] = ans
-#         json.dump(temp, new_file, indent=4)
-
-
-
-# def aggregate_json_files(hash_tab, dest_dir):
-#     """
-#     sorting these hash tables based on keys and values
-
-#     """
-#     with open(os.path.join(dest_dir, "hash_tab_value_sorted.json"), 'w') as hash_tab_file:
-#         hashed_dict = dict(sorted(hash_tab.items(), key=lambda item: item[1], reverse=True))
-#         json.dump(hashed_dict, hash_tab_file, ensure_ascii=False, indent=4)
-#     with open(os.path.join(dest_dir, "hash_tab_key_sorted.json"), 'w') as hash_tab_file:
-#         hashed_dict = dict(sorted(hash_tab.items(), key=lambda item: item[0]))
-#         json.dump(hashed_dict, hash_tab_file, ensure_ascii=False, indent=4)
+ def final_n_gram_table(dest_dir, filename, file_number):
+     with open(os.path.join(dest_dir, filename.replace("html", "ngram")),'w') as new_file:
+         temp =  {}
+         for token in N_GRAM_LIST.keys() :
+             #values_sum = sum(d.get(file_number, 0) for d in LINKED_LIST.values() if d)
+             if file_number in N_GRAM_LIST[token]:
+                 tf = N_GRAM_LIST[token][file_number] / N_GRAM_COUNT[file_number]
+                 token_count = len(N_GRAM_LIST[token])
+                 idf = 1/ token_count
+                 ans = tf * idf 
+                 temp [token] = ans
+         json.dump(temp, new_file, indent=4)
 
 
 
-# def write_n_gram(data, dest_dir, filename, count):
-#     tokens_list = []
-#     temp_dict = {}
-#     soap_text = BeautifulSoup(data, 'html.parser').get_text()
-#     tokens = word_tokenize(soap_text)                                                                                                                                                   
-#     tokens_list = []
-#     s = []
-#     for token in tokens:
-#         s = [tokens_list.append(token[i:i+3]) for i in range(len(token)-3+1)]
-#     N_GRAM_COUNT[count] = len(tokens_list)
-#     n_gram_hash(tokens_list, count)
+ def aggregate_json_files(hash_tab, dest_dir):
+     """
+     sorting these hash tables based on keys and values
 
-
-# def n_gram_hash(tokens_list, count) :
-#     for token in tokens_list:
-#         if token not in N_GRAM_LIST:
-#             N_GRAM_LIST.setdefault(token, {})
-        
-#         if token in N_GRAM_LIST and count not in N_GRAM_LIST[token]:
-#             N_GRAM_LIST[token][count]  = tokens_list.count(token)
+     """
+     with open(os.path.join(dest_dir, "hash_tab_value_sorted.json"), 'w') as hash_tab_file:
+         hashed_dict = dict(sorted(hash_tab.items(), key=lambda item: item[1], reverse=True))
+         json.dump(hashed_dict, hash_tab_file, ensure_ascii=False, indent=4)
+     with open(os.path.join(dest_dir, "hash_tab_key_sorted.json"), 'w') as hash_tab_file:
+         hashed_dict = dict(sorted(hash_tab.items(), key=lambda item: item[0]))
+         json.dump(hashed_dict, hash_tab_file, ensure_ascii=False, indent=4)
 
 
 
-# def computations_plot(temp_dict):
-#     """
-    
-#     plots for analysis of time taken for compuations and aggregations of those files
+ def write_n_gram(data, dest_dir, filename, count):
+     tokens_list = []
+     temp_dict = {}
+     soap_text = BeautifulSoup(data, 'html.parser').get_text()
+     tokens = word_tokenize(soap_text)                                                                                                                                                   
+     tokens_list = []
+     s = []
+     for token in tokens:
+         s = [tokens_list.append(token[i:i+3]) for i in range(len(token)-3+1)]
+     N_GRAM_COUNT[count] = len(tokens_list)
+     n_gram_hash(tokens_list, count)
 
-#     """
+
+ def n_gram_hash(tokens_list, count) :
+     for token in tokens_list:
+         if token not in N_GRAM_LIST:
+             N_GRAM_LIST.setdefault(token, {})
+       
+         if token in N_GRAM_LIST and count not in N_GRAM_LIST[token]:
+             N_GRAM_LIST[token][count]  = tokens_list.count(token)
 
 
-#     fig,ax = plt.subplots(figsize=(6,6))
-#     files = list(temp_dict.keys())
-#     times = list(temp_dict.values())
-#     files = [100, 200, 300, 400, 500]
-#     ax.plot(files,times)
-#     ax.xaxis.set_major_locator(plt.MaxNLocator(10))
-#     plt.xticks(rotation=30)
-#     ax.set_xlabel("Each File Number")
-#     ax.set_ylabel("Size in KB for total files")
-#     ax.set_title("Size for creation of postings + Dict files")
-#     plt.show()
-    
-#     agg_time = []
-#     curr_time = 0
-#     for time in times:
-#         curr_time = curr_time + time
-#         agg_time.append(curr_time)
-#     fig,ax2 = plt.subplots(figsize=(6,6))
-#     ax2.plot(files,agg_time)
-#     ax2.xaxis.set_major_locator(plt.MaxNLocator(15))
-#     plt.xticks(rotation=30)
-#     ax2.set_xlabel("Files")
-#     ax2.set_ylabel("Time for files")
-#     ax2.set_title("Aggregation time")
-#     plt.show()
 
-    # plt.title("Probability of tokens VS Rank ")
-    # plt.ylabel("Probability of token")
-    # plt.xlabel("Rank of words")
-    # rank_list = []
-    # value_list = []
-    # sum_values =  sum(WORDS_COUNT.values())
-    # for rank, value in enumerate(WORDS_ONCE) : 
-    #     rank_list.append(rank + 1)
-    #     value_list.append(WORDS_ONCE[value] / sum_values )
-    # plt.loglog(
-    #     rank_list,
-    #     value_list        
-    # )
-    # plt.show()
+ def computations_plot(temp_dict):
+     """
+   
+     plots for analysis of time taken for compuations and aggregations of those files
+
+     """
+
+
+     fig,ax = plt.subplots(figsize=(6,6))
+     files = list(temp_dict.keys())
+     times = list(temp_dict.values())
+     files = [100, 200, 300, 400, 500]
+     ax.plot(files,times)
+     ax.xaxis.set_major_locator(plt.MaxNLocator(10))
+     plt.xticks(rotation=30)
+     ax.set_xlabel("Each File Number")
+     ax.set_ylabel("Size in KB for total files")
+     ax.set_title("Size for creation of postings + Dict files")
+     plt.show()
+   
+     agg_time = []
+     curr_time = 0
+     for time in times:
+         curr_time = curr_time + time
+         agg_time.append(curr_time)
+     fig,ax2 = plt.subplots(figsize=(6,6))
+     ax2.plot(files,agg_time)
+     ax2.xaxis.set_major_locator(plt.MaxNLocator(15))
+     plt.xticks(rotation=30)
+     ax2.set_xlabel("Files")
+     ax2.set_ylabel("Time for files")
+     ax2.set_title("Aggregation time")
+     plt.show()
+
+ plt.title("Probability of tokens VS Rank ")
+ plt.ylabel("Probability of token")
+ plt.xlabel("Rank of words")
+ rank_list = []
+ value_list = []
+ sum_values =  sum(WORDS_COUNT.values())
+ for rank, value in enumerate(WORDS_ONCE) : 
+     rank_list.append(rank + 1)
+     value_list.append(WORDS_ONCE[value] / sum_values )
+ plt.loglog(
+     rank_list,
+     value_list        
+ )
+ plt.show()
 
 
 
